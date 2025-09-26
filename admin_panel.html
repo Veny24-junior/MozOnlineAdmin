@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - Moz Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+   <style>
+    body { 
+        font-family: 'Inter', sans-serif; 
+    }
+    /* NOVO: Fundo mais vibrante na página de login */
+    .bg-gradient-to-br {
+        background-image: linear-gradient(to bottom right, #e0f7fa, #b2ebf2); /* Tonalidades azuis/ciano suaves */
+    }
+
+    /* NOVO: Sombra mais suave para o cartão de login/cadastro */
+    .shadow-2xl {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* -- Estilos para o efeito de virar o cartão (Flip Card) -- */
+    .perspective-container {
+        perspective: 1000px;
+    }
+    .card-container {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        height: 620px; 
+    }
+    .card-face {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden; 
+    }
+    .card-back {
+        transform: rotateY(180deg);
+    }
+    .is-flipped {
+        transform: rotateY(180deg);
+    }
+    
+    /* CORREÇÃO DO ERRO DE ROTAÇÃO DA MENSAGEM NO CARD-BACK */
+    .is-flipped #auth-status {
+        transform: rotateY(180deg) translateX(-50%); 
+    }
+    
+    .title-gradient {
+        background-image: linear-gradient(to right, #14b8a6, #06b6d4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Estilo para a animação do botão (opcional) */
+    .btn-pulse {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(20, 184, 166, 0);
+        }
+    }
+</style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-gray-200 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <main class="w-full max-w-4xl mx-auto">
+        
+        <div id="auth-wrapper" class="perspective-container">
+            <div id="auth-container" class="card-container w-full max-w-md mx-auto">
+                
+                <div id="login-flow-section" class="card-face bg-white rounded-2xl shadow-2xl p-8 flex flex-col justify-center">
+                    <div id="login-section">
+                        <div class="text-center mb-8">
+                            <div class="inline-block bg-teal-600 p-3 rounded-full mb-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                            <h1 class="text-3xl font-extrabold text-gray-800 title-gradient">Bem-vindo de Volta</h1>
+                            <p class="text-gray-500 mt-2">Aceda para gerir as denúncias.</p>
+                        </div>
+                        <form id="login-form">
+                            <div class="relative mb-4">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg></span>
+                                <input type="email" id="login-email" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="E-mail" required>
+                            </div>
+                            <div class="relative mb-6">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg></span>
+                                <input type="password" id="login-password" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Senha" required>
+                            </div>
+                            <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-300 transition-all transform hover:scale-105">Aceder</button>
+                        </form>
+                        <p class="text-center mt-6 text-sm">Não tem uma conta? <a href="#" id="show-register-form" class="text-teal-600 font-semibold hover:underline">Cadastre-se</a></p>
+                    </div>
+                    <div id="code-verification-section" class="hidden">
+                        <div class="text-center mb-8">
+                            <h1 class="text-2xl font-extrabold text-gray-800">Verificação de Segurança</h1>
+                            <p class="text-gray-500 mt-2">Enviámos um código para o seu e-mail. <br>(Funcionalidade simulada)</p>
+                        </div>
+                        <form id="code-verification-form">
+                            <div class="relative mb-6">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" /></svg></span>
+                                <input type="text" id="verification-code" class="w-full text-center tracking-[0.5em] p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="_ _ _ _ _ _" required>
+                            </div>
+                            <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-300">Verificar e Entrar</button>
+                        </form>
+                        <p class="text-center mt-6 text-sm"><a href="#" id="back-to-login" class="text-gray-500 font-semibold hover:underline">Voltar ao Login</a></p>
+                    </div>
+                </div>
+
+                <div id="register-section" class="card-face card-back bg-white rounded-2xl shadow-2xl p-8 flex flex-col justify-center">
+                    <div class="text-center mb-6">
+                        <h1 class="text-3xl font-extrabold text-gray-800 title-gradient">Criar Conta</h1>
+                        <p class="text-gray-500 mt-2">Apenas para novos administradores.</p>
+                    </div>
+                    <form id="register-form">
+                        <div class="relative mb-4">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg></span>
+                            <input type="text" id="register-name" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Nome Completo" required>
+                        </div>
+                        <div class="relative mb-4">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg></span>
+                            <input type="email" id="register-email" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="E-mail" required>
+                        </div>
+                        <div class="relative mb-4">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg></span>
+                            <input type="password" id="register-password" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Senha" required>
+                        </div>
+                        <div class="relative mb-6">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg></span>
+                            <input type="password" id="register-confirm-password" class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Confirmar Senha" required>
+                        </div>
+                        <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-300 transition-all transform hover:scale-105">Cadastrar</button>
+                    </form>
+                    <p class="text-center mt-6 text-sm"><a href="#" id="show-login-form" class="text-teal-600 font-semibold hover:underline">Já tenho uma conta</a></p>
+                </div>
+                <p id="auth-status" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-sm font-semibold w-full px-2"></p>
+            </div>
+        </div>
+
+        <div id="admin-panel-container" class="hidden w-full transition-opacity duration-500 mt-8">
+            <header class="flex flex-col sm:flex-row justify-between items-center py-6 mb-8 border-b border-gray-200">
+                <h1 class="text-3xl font-bold text-gray-800">Dashboard de Administração</h1>
+                <div class="flex space-x-4 mt-4 sm:mt-0">
+                    <button id="show-publish-form-button" class="flex items-center bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-300 transition-all transform hover:scale-105 btn-pulse">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Publicar Fraude
+                    </button>
+                    
+                    <button id="logout-button" class="flex items-center bg-red-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition-all">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Sair
+                    </button>
+                </div>
+            </header>
+            
+            <div id="dashboard-content">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-teal-500">
+                        <p class="text-sm font-medium text-gray-500">Denúncias Totais</p>
+                        <p id="stat-total" class="text-3xl font-bold text-gray-900 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-yellow-500">
+                        <p class="text-sm font-medium text-gray-500">Pendentes</p>
+                        <p id="stat-pending" class="text-3xl font-bold text-gray-900 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-500">
+                        <p class="text-sm font-medium text-gray-500">Publicadas</p>
+                        <p id="stat-published" class="text-3xl font-bold text-gray-900 mt-1">0</p>
+                    </div>
+                </div>
+
+                <div id="reports-section" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                        Últimas Denúncias Recebidas (Para Revisão)
+                    </h2>
+                    <div id="reports-list" class="space-y-4">
+                        <div id="loading-reports" class="text-center text-gray-500"><p>A carregar denúncias...</p></div>
+                    </div>
+                </div>
+
+                <div id="publish-form-section" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mt-8 hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        Publicar Nova Fraude
+                    </h2>
+                    <form id="publish-fraud-form">
+                        <div class="mb-4">
+                            <label for="fraud-title" class="block text-sm font-medium text-gray-700">Título da Publicação</label>
+                            <input type="text" id="fraud-title" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition" required placeholder="Ex: Venda Falsa de Carro - Maputo">
+                        </div>
+                        <div class="mb-4">
+                            <label for="fraud-description" class="block text-sm font-medium text-gray-700">Descrição Detalhada da Fraude</label>
+                            <textarea id="fraud-description" rows="5" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition" required placeholder="Inclua detalhes do golpe, nomes, números de contacto e a localização (Simulação de corpo da notícia)."></textarea>
+                        </div>
+                        <div class="mb-6">
+                            <label for="fraud-category" class="block text-sm font-medium text-gray-700">Categoria</label>
+                            <select id="fraud-category" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                                <option value="Vendas Online">Vendas Online</option>
+                                <option value="Phishing">Phishing / Golpes por E-mail</option>
+                                <option value="Imobiliário">Imobiliário</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div id="publish-status" class="text-center text-sm font-semibold mb-4 hidden"></div>
+                        <div class="flex space-x-4">
+                            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all">
+                                Publicar Agora
+                            </button>
+                            <button type="button" id="hide-publish-form-button" class="w-1/3 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-all">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
