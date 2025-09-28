@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-MZ">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -177,7 +177,7 @@
                         <p id="stat-pending" class="text-3xl font-bold text-gray-900 mt-1">0</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-500">
-                        <p class="text-sm font-medium text-gray-500">Publicadas</p>
+                        <p class="text-sm font-medium text-gray-500">Resolvidas/Aprovadas</p>
                         <p id="stat-published" class="text-3xl font-bold text-gray-900 mt-1">0</p>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                 <div id="reports-section" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                         <svg class="w-6 h-6 mr-3 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                        Últimas Denúncias Recebidas (Para Revisão)
+                        Últimas Denúncias Recebidas (Ordem de Chegada)
                     </h2>
                     <div id="reports-list" class="space-y-4">
                         <div id="loading-reports" class="text-center text-gray-500"><p>A carregar denúncias...</p></div>
@@ -230,6 +230,82 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <div id="report-details-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 overflow-y-auto" style="backdrop-filter: blur(5px);">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                
+                <div class="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
+                    <h2 id="modal-title" class="text-2xl font-bold text-gray-800">Detalhes da Denúncia</h2>
+                    <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="p-6">
+                    <div id="modal-loading" class="text-center text-gray-500 py-10 hidden">A carregar detalhes...</div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="mb-4 sm:mb-0">
+                            <span class="text-sm font-medium text-gray-700 mr-2">Status Atual:</span>
+                            <span id="current-status-display" class="px-3 py-1 text-sm font-bold rounded-full"></span>
+                        </div>
+                        <div class="flex space-x-3 items-center">
+                            <label for="status-select" class="text-sm font-medium text-gray-700 hidden sm:block">Mudar Status:</label>
+                            <select id="status-select" class="block p-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                <option value="Pendente">Pendente (Amarelo)</option>
+                                <option value="Em Revisão">Em Revisão (Azul)</option>
+                                <option value="Resolvido">Resolvido (Verde)</option>
+                            </select>
+                            <button id="save-status-btn" class="bg-teal-600 text-white p-2 rounded-md font-semibold hover:bg-teal-700 text-sm transition">Salvar</button>
+                        </div>
+                    </div>
+                    
+                    <div id="status-update-feedback" class="text-sm font-medium mb-4 hidden"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 text-sm">
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Modo de Reporte:</p>
+                            <p id="modal-report-mode" class="font-semibold text-gray-800"></p>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Tipo de Fraude:</p>
+                            <p id="modal-report-type" class="font-semibold text-gray-800"></p>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Nome do Denunciante:</p>
+                            <p id="modal-client-name" class="font-semibold text-gray-800"></p>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Telefone:</p>
+                            <p id="modal-client-phone" class="font-semibold text-gray-800"></p>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Data da Ocorrência:</p>
+                            <p id="modal-occurrence-date" class="font-semibold text-gray-800"></p>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg">
+                            <p class="text-gray-500">Local da Ocorrência:</p>
+                            <p id="modal-occurrence-location" class="font-semibold text-gray-800"></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 p-4 bg-white border rounded-lg">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2 border-b pb-1">Descrição Detalhada</h3>
+                        <p id="modal-report-description" class="text-gray-700 whitespace-pre-line"></p>
+                    </div>
+
+                    <div class="p-4 bg-white border rounded-lg">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-1">Evidências Anexadas</h3>
+                        <div id="modal-evidences-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            </div>
+                        <p id="no-evidences-message" class="text-gray-500 mt-4 hidden">Nenhuma evidência anexada ou o arquivo excedeu o limite de 5MB.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="Admin_Panel.js" type="module"></script>
 </body>
 </html>
